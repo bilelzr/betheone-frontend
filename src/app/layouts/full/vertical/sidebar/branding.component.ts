@@ -7,17 +7,19 @@ import { CoreService } from 'src/app/services/core.service';
   template: `
     <a href="/" class="logodark">
       <img
-        src="./assets/images/logos/dark-logo.svg"
+        src="./assets/images/BE THE ONE LOGO PNG 5.png"
         class="align-middle m-2"
         alt="logo"
+        style="max-width: 150px; height: auto;"
       />
     </a>
 
     <a href="/" class="logolight">
       <img
-        src="./assets/images/logos/light-logo.svg"
+        src="./assets/images/BE THE ONE LOGO PNG 5.png"
         class="align-middle m-2"
         alt="logo"
+        style="max-width: 150px; height: auto;"
       />
     </a>
   `,
