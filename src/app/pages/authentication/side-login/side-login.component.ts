@@ -3,7 +3,6 @@ import {CoreService} from 'src/app/services/core.service';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router, RouterModule} from '@angular/router';
 import {MaterialModule} from '../../../material.module';
-import {BrandingComponent} from '../../../layouts/full/vertical/sidebar/branding.component';
 import {AuthService} from "../../../services/apps/auth/auth.service";
 import {AuthenticationResponse} from "../../../services/models/authenticationResponse";
 import {jwtDecode} from "jwt-decode";
@@ -13,7 +12,7 @@ import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-side-login',
-  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, BrandingComponent, NgIf],
+  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, NgIf],
   templateUrl: './side-login.component.html'
 })
 export class AppSideLoginComponent {

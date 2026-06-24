@@ -1,0 +1,179 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h2 class="f-w-600 m-0">Edit Member</h2>
+              <p class="text-muted m-0">Update member details</p>
+            </div>
+            <button mat-stroked-button routerLink="/gym/members">
+              <i-tabler name="arrow-left" class="icon-18 m-r-8"></i-tabler>
+              Back to List
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row m-t-24">
+    <div class="col-lg-8">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <h5 class="f-w-600 m-b-16">Personal Information</h5>
+          <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="firstName" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="lastName" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email" formControlName="email" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Phone</mat-label>
+                  <input matInput formControlName="phone" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Date of Birth</mat-label>
+                  <input matInput type="date" formControlName="dateOfBirth">
+                  <mat-error>Date of birth is required</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Join Date</mat-label>
+                  <input matInput [value]="member?.joinDate" readonly>
+                </mat-form-field>
+              </div>
+
+              <div class="col-12 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Address</mat-label>
+                  <textarea matInput formControlName="address" rows="2"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Emergency Contact</mat-label>
+                  <input matInput formControlName="emergencyContact">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-6 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Emergency Phone</mat-label>
+                  <input matInput formControlName="emergencyPhone">
+                </mat-form-field>
+              </div>
+
+              <div class="col-12 m-b-16">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Notes</mat-label>
+                  <textarea matInput formControlName="notes" rows="2"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2">
+                  <button mat-stroked-button type="button" (click)="onCancel()">
+                    Cancel
+                  </button>
+                  <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+                    <i-tabler name="save" class="icon-18 m-r-8" *ngIf="!loading"></i-tabler>
+                    <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+                    {{ loading ? 'Updating...' : 'Update Member' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <h5 class="f-w-600 m-b-16">Current Subscription</h5>
+          <ng-container *ngIf="getActiveSubscription() as subscription; else noSubscription">
+            <div class="p-16 bg-light rounded">
+              <div class="d-flex align-items-center justify-content-between m-b-8">
+                <span class="badge bg-light-success text-success">{{ subscription.status }}</span>
+                <span class="badge bg-light-warning text-warning" *ngIf="isSubscriptionExpired(subscription)">Expired</span>
+              </div>
+              <div class="m-b-8">
+                <p class="text-muted m-0 f-s-12">Start Date</p>
+                <p class="f-w-600 m-0">{{ subscription.startDate | date:'mediumDate' }}</p>
+              </div>
+              <div>
+                <p class="text-muted m-0 f-s-12">End Date</p>
+                <p class="f-w-600 m-0">{{ subscription.endDate | date:'mediumDate' }}</p>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #noSubscription>
+            <div class="p-16 bg-light rounded text-center">
+              <i-tabler name="id-badge-off" class="icon-48 text-muted m-b-8"></i-tabler>
+              <p class="text-muted m-0">No active subscription</p>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cardWithShadow m-t-16" *ngIf="hasSubscriptions()">
+        <mat-card-content>
+          <h5 class="f-w-600 m-b-16">Subscription History</h5>
+          <div class="subscription-history">
+            <div *ngFor="let sub of getSubscriptions()" class="p-12 border-bottom">
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="badge" [ngClass]="{
+                  'bg-light-success text-success': sub.status === 'ACTIVE',
+                  'bg-light-warning text-warning': sub.status === 'EXPIRED',
+                  'bg-light-danger text-danger': sub.status === 'CANCELLED'
+                }">{{ sub.status }}</span>
+                <span class="f-s-12 text-muted">{{ sub.startDate | date:'shortDate' }} - {{ sub.endDate | date:'shortDate' }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cardWithShadow m-t-16">
+        <mat-card-content>
+          <h5 class="f-w-600 m-b-16">Available Memberships</h5>
+          <div *ngFor="let membership of memberships" class="p-12 border-bottom d-flex align-items-center justify-content-between">
+            <div>
+              <p class="f-w-600 m-0">{{ membership.name }}</p>
+              <span class="f-s-12 text-muted">{{ membership.durationDays }} days</span>
+            </div>
+            <span class="f-w-600 text-primary">{{ formatPrice(membership.price) }}</span>
+          </div>
+          <p class="text-muted f-s-12 m-t-8 m-0" *ngIf="memberships.length === 0">No memberships available</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -10,6 +10,27 @@ export const navItems: NavItem[] = [
     route: '/dashboards/dashboard1',
     roles: ['ADMIN','RDP']
   },
+  {
+    navCap: 'Gym',
+  },
+  {
+    displayName: 'Dashboard',
+    iconName: 'dashboard',
+    route: '/gym/dashboard',
+    roles: ['ADMIN','RDP']
+  },
+  {
+    displayName: 'Members',
+    iconName: 'users',
+    route: '/gym/members',
+    roles: ['ADMIN','RDP']
+  },
+  {
+    displayName: 'Memberships',
+    iconName: 'id-badge-2',
+    route: '/gym/memberships',
+    roles: ['ADMIN','RDP']
+  },
   /*  {
       displayName: 'eCommerce',
       iconName: 'shopping-cart',

@@ -1,0 +1,117 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h2 class="f-w-600 m-0">Memberships</h2>
+              <p class="text-muted m-0">Manage membership plans</p>
+            </div>
+            <button mat-raised-button color="primary" routerLink="/gym/memberships/add">
+              <i-tabler name="plus" class="icon-18 m-r-8"></i-tabler>
+              Add Membership
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row m-t-24">
+    <div class="col-12">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between m-b-16">
+            <mat-form-field appearance="outline" class="w-50">
+              <mat-label>Search memberships</mat-label>
+              <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" placeholder="Search by name or type">
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <table mat-table [dataSource]="dataSource" class="w-100">
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">#</th>
+              <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Name</th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  <h6 class="m-0 f-w-600">{{ element.name }}</h6>
+                  <span class="f-s-12 text-muted">{{ element.description }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Type</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="badge bg-light-primary text-primary">{{ element.type }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Price</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="f-w-600">{{ formatPrice(element.price) }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="duration">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Duration</th>
+              <td mat-cell *matCellDef="let element">{{ element.durationDays }} days</td>
+            </ng-container>
+
+            <ng-container matColumnDef="features">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Features</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="d-flex gap-1 flex-wrap">
+                  <span class="badge bg-light-success text-success" *ngIf="element.includesClasses">
+                    <i-tabler name="check" class="icon-14"></i-tabler> Classes
+                  </span>
+                  <span class="badge bg-light-success text-success" *ngIf="element.includesPersonalTraining">
+                    <i-tabler name="check" class="icon-14"></i-tabler> PT
+                  </span>
+                  <span class="badge bg-light-info text-info" *ngIf="element.maxClassesPerMonth">
+                    {{ element.maxClassesPerMonth }} classes/mo
+                  </span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Status</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="badge bg-light-success text-success" *ngIf="element.active">Active</span>
+                <span class="badge bg-light-warning text-warning" *ngIf="!element.active">Inactive</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="f-w-600">Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button [routerLink]="['/gym/memberships/edit', element.membershipPkId]">
+                  <i-tabler name="edit" class="icon-20 text-primary"></i-tabler>
+                </button>
+                <button mat-icon-button (click)="toggleStatus(element)" *ngIf="element.active" matTooltip="Deactivate">
+                  <i-tabler name="toggle-right" class="icon-20 text-warning"></i-tabler>
+                </button>
+                <button mat-icon-button (click)="deleteMembership(element.membershipPkId)">
+                  <i-tabler name="trash" class="icon-20 text-danger"></i-tabler>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

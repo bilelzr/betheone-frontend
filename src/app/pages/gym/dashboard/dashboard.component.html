@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h2 class="f-w-600 m-0">Gym Dashboard</h2>
+              <p class="text-muted m-0">Overview of your gym operations</p>
+            </div>
+            <button mat-raised-button color="primary">
+              <i-tabler name="refresh" class="icon-18 m-r-8"></i-tabler>
+              Refresh
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row m-t-24" *ngIf="!loading">
+    <div class="col-sm-6 col-lg-3">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center">
+            <div class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-light-primary">
+              <i-tabler name="users" class="icon-20 text-primary"></i-tabler>
+            </div>
+            <div class="m-l-16">
+              <h3 class="f-w-600 m-0">{{ stats.totalMembers }}</h3>
+              <span class="f-s-14 text-muted">Total Members</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center">
+            <div class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-light-success">
+              <i-tabler name="check" class="icon-20 text-success"></i-tabler>
+            </div>
+            <div class="m-l-16">
+              <h3 class="f-w-600 m-0">{{ stats.activeSubscriptions }}</h3>
+              <span class="f-s-14 text-muted">Active Subscriptions</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center">
+            <div class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-light-warning">
+              <i-tabler name="calendar" class="icon-20 text-warning"></i-tabler>
+            </div>
+            <div class="m-l-16">
+              <h3 class="f-w-600 m-0">{{ stats.todayClasses }}</h3>
+              <span class="f-s-14 text-muted">Classes Today</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <mat-card class="cardWithShadow">
+        <mat-card-content>
+          <div class="d-flex align-items-center">
+            <div class="round-40 rounded-circle d-flex align-items-center justify-content-center bg-light-accent">
+              <i-tabler name="currency-dollar" class="icon-20 text-accent"></i-tabler>
+            </div>
+            <div class="m-l-16">
+              <h3 class="f-w-600 m-0">${{ stats.monthlyRevenue | number:'1.2-2' }}</h3>
+              <span class="f-s-14 text-muted">Monthly Revenue</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row m-t-24" *ngIf="!loading">
+    <div class="col-lg-6">
+      <mat-card class="cardWithShadow">
+        <mat-card-header>
+          <mat-card-title>Quick Actions</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-6 m-b-16">
+              <button mat-stroked-button class="w-100" routerLink="/gym/members/add">
+                <i-tabler name="user-plus" class="icon-18 m-r-8"></i-tabler>
+                Add Member
+              </button>
+            </div>
+            <div class="col-6 m-b-16">
+              <button mat-stroked-button class="w-100" routerLink="/gym/classes/add">
+                <i-tabler name="plus" class="icon-18 m-r-8"></i-tabler>
+                Add Class
+              </button>
+            </div>
+            <div class="col-6 m-b-16">
+              <button mat-stroked-button class="w-100" routerLink="/gym/schedule">
+                <i-tabler name="calendar-event" class="icon-18 m-r-8"></i-tabler>
+                View Schedule
+              </button>
+            </div>
+            <div class="col-6 m-b-16">
+              <button mat-stroked-button class="w-100" routerLink="/gym/payments">
+                <i-tabler name="cash" class="icon-18 m-r-8"></i-tabler>
+                Payments
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-6">
+      <mat-card class="cardWithShadow">
+        <mat-card-header>
+          <mat-card-title>Alerts</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="alert alert-warning" *ngIf="stats.expiringSubscriptions > 0">
+            <i-tabler name="alert-circle" class="icon-18 m-r-8"></i-tabler>
+            <strong>{{ stats.expiringSubscriptions }}</strong> subscriptions expiring in the next 7 days
+            <a routerLink="/gym/subscriptions" class="m-l-8">View</a>
+          </div>
+          <div class="alert alert-info" *ngIf="stats.expiringSubscriptions === 0">
+            <i-tabler name="check-circle" class="icon-18 m-r-8"></i-tabler>
+            No urgent alerts at this time
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row m-t-24" *ngIf="loading">
+    <div class="col-12 text-center">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p class="m-t-16">Loading dashboard...</p>
+    </div>
+  </div>
+</div>
